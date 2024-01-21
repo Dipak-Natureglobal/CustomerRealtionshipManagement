@@ -1,0 +1,24 @@
+﻿@model CustomerRealtionshipManagement.Models.Customer
+@{
+    ViewData["Title"] = "Checking";
+    bool flag = (bool)ViewData["IsPhoneNumberPresent"];
+}
+
+
+<h2>Checking</h2>
+<div asp-action="Checking">
+
+@if (flag)
+{
+    <h1>The phone number is Registered.</h1>
+    <p>You dont need to register yourself you can directly ask your question by clicking below link</p>
+     <a class="btn btn-danger" href="@Url.Action("AddQuestion")">Register New</a>
+
+}
+else
+{
+    <h1>The phone number is not yet Register.</h1>
+    <p>Please Register yourself by clicking on the below button</p>
+     <a class="btn btn-danger" href="@Url.Action("AddOrEdit")">Register New</a>
+}
+</div>
