@@ -5,10 +5,6 @@
 }
 
 <h1>Customer List</h1>
-
-<p>
-    <a class="btn btn-primary" href="@Url.Action("AddOrEdit")">Register New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -41,7 +37,6 @@
             <td>
                
                 <a class="btn btn-warning" href="@Url.Action("AddOrEdit", new { id = item.CustomerID })">Edit</a>
-                <a class="btn btn-success" href="@Url.Action("AddQuestion", new { id = item.CustomerID })">Add_Question</a>
                 <a class="btn btn-danger" href="@Url.Action("Delete", new { id = item.CustomerID })">Delete</a>
             </td>
         </tr>

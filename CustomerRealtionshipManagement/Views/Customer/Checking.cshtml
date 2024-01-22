@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Checking";
     bool flag = (bool)ViewData["IsPhoneNumberPresent"];
+    string phoneNumber = ViewData["PhoneNumber"] as string;
 }
 
 
@@ -10,10 +11,9 @@
 
 @if (flag)
 {
-    <h1>The phone number is Registered.</h1>
+    <h1>This phone number is already Registered.</h1>
     <p>You dont need to register yourself you can directly ask your question by clicking below link</p>
-     <a class="btn btn-danger" href="@Url.Action("AddQuestion")">Register New</a>
-
+        <a class="btn btn-danger" href="@Url.Action("PhoneView", new { phoneNumber = phoneNumber })">View All Data</a>
 }
 else
 {

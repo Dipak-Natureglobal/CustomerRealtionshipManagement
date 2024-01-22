@@ -1,0 +1,47 @@
+﻿@model IEnumerable<CustomerRealtionshipManagement.Models.Customer>
+
+@{
+    ViewData["Title"] = "PhoneView";
+}
+
+<h1>Customer List</h1>
+<table class="table">
+    <thead>
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Question)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Question)
+                </td>
+                <td>
+
+                
+                    <a class="btn btn-success" href="@Url.Action("AddQuestion", new { id = item.CustomerID })">Add_Question</a>
+                   
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

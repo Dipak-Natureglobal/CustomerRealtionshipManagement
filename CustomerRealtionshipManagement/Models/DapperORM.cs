@@ -17,15 +17,24 @@ namespace CustomerRealtionshipManagement.Models
 
             }
         }
-    
-        public static T ExecuteReturnScalar<T>(string ProcedureName, DynamicParameters para = null)
+        public static int ExecuteReturnScalarInt(string ProcedureName, DynamicParameters para)
         {
-            using (SqlConnection sqlcon = new SqlConnection(connectionstring))
+            try
+             {
+                using (SqlConnection sqlcon = new SqlConnection(connectionstring))
+                {
+                    sqlcon.Open();
+                    sqlcon.Execute(ProcedureName, para, commandType: CommandType.StoredProcedure);
+                    int result = para.Get<int>("Result");
+                    return result;
+                }
+            }
+            catch (Exception ex)
             {
-                sqlcon.Open();
-                return (T)Convert.ChangeType(sqlcon.Execute(ProcedureName, para, commandType: CommandType.StoredProcedure), typeof(T));
+                return 0;
             }
         }
+
         public static IEnumerable<T> ReturnList<T>(string ProcedureName, DynamicParameters para = null)
         {
             using (SqlConnection sqlcon = new SqlConnection(connectionstring))
@@ -34,7 +43,6 @@ namespace CustomerRealtionshipManagement.Models
                 return sqlcon.Query<T>(ProcedureName, para, commandType: CommandType.StoredProcedure);
             }
         }
-
     }
 }
 

@@ -1,18 +1,12 @@
 ﻿using CustomerRealtionshipManagement.Models;
 using Dapper;
 using Microsoft.AspNetCore.Mvc;
-
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Policy;
+using System.Data;
 
 namespace CustomerRealtionshipManagement.Controllers
 {
     public class CustomerController : Controller
     {
-
-        List<string> list = new List<string>();
         public IActionResult Index()
         {
             return View(DapperORM.ReturnList<Customer>("Customerviewall"));
@@ -40,7 +34,6 @@ namespace CustomerRealtionshipManagement.Controllers
             para.Add("Name", cust.Name);
             para.Add("PhoneNumber", cust.PhoneNumber);
             para.Add("Question", cust.Question);
-            list.Add(cust.PhoneNumber);
             DapperORM.ExecuteWithoutReturn("CustomerAddOrEdit", para);
             return RedirectToAction("Index");
         }
@@ -78,23 +71,35 @@ namespace CustomerRealtionshipManagement.Controllers
             DapperORM.ExecuteWithoutReturn("CustomerAddQuestion", para);
             return RedirectToAction("Index");
         }
-
         [HttpGet]
-        public IActionResult Checking1(string phoneNumber)
+        public ActionResult Checking1(Customer cust)
         {
-            bool isPhoneNumberPresent = !string.IsNullOrWhiteSpace(phoneNumber) && CheckPhoneNumberPresence(phoneNumber);
-            ViewData["IsPhoneNumberPresent"] = isPhoneNumberPresent;
+            DynamicParameters para = new DynamicParameters();
+            para.Add("@PhoneNumber", cust.PhoneNumber);
+            para.Add("@Result", 0,DbType.Int32,ParameterDirection.Output);
 
+            int Result = DapperORM.ExecuteReturnScalarInt("CheckPhoneNumber", para);
+            bool isPhoneNumberPresent;
+            if (Result > 0)
+            {
+                isPhoneNumberPresent = true;
+            }
+            else
+            {
+                isPhoneNumberPresent = false;
+            }
+            ViewData["IsPhoneNumberPresent"] = isPhoneNumberPresent;
+            ViewData["PhoneNumber"] = cust.PhoneNumber;
             return View("Checking");
         }
-
-        private bool CheckPhoneNumberPresence(string phoneNumber)
+        [HttpGet]
+        public  ActionResult PhoneView(string PhoneNumber)
         {
-            if (!string.IsNullOrWhiteSpace(phoneNumber))
-            {
-                return list.Contains(phoneNumber);
-            }
-            return false;
+            DynamicParameters para = new DynamicParameters();
+            para.Add("@PhoneNumber", PhoneNumber);
+         
+            return View(DapperORM.ReturnList<Customer>("CustomerViewByPhoneNumber", para));
         }
+
     }
 }
