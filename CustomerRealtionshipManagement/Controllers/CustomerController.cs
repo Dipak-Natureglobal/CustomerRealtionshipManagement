@@ -93,12 +93,42 @@ namespace CustomerRealtionshipManagement.Controllers
             return View("Checking");
         }
         [HttpGet]
+        public ActionResult Checking2(Customer cust)
+        {
+            DynamicParameters para = new DynamicParameters();
+            para.Add("@Name", cust.Name);
+            para.Add("@Result", 0, DbType.Int32, ParameterDirection.Output);
+
+            int Result = DapperORM.ExecuteReturnScalarInt("CustomerCheckName", para);
+            bool isName;
+            if (Result > 0)
+            {
+                isName = true;
+            }
+            else
+            {
+                isName = false;
+            }
+            ViewData["IsName"] = isName;
+            ViewData["Name"] = cust.Name;
+            return View("CheckingName");
+        }
+        [HttpGet]
         public  ActionResult PhoneView(string PhoneNumber)
         {
             DynamicParameters para = new DynamicParameters();
             para.Add("@PhoneNumber", PhoneNumber);
          
             return View(DapperORM.ReturnList<Customer>("CustomerViewByPhoneNumber", para));
+        }
+
+        [HttpGet]
+        public ActionResult NameView(string Name)
+        {
+            DynamicParameters para = new DynamicParameters();
+            para.Add("@Name", Name);
+
+            return View(DapperORM.ReturnList<Customer>("CustomerViewByName", para));
         }
 
     }

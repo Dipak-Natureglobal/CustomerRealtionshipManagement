@@ -4,20 +4,20 @@
     bool flag = (bool)ViewData["IsPhoneNumberPresent"];
     string phoneNumber = ViewData["PhoneNumber"] as string;
 }
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 <h2>Checking</h2>
 <div asp-action="Checking">
 
 @if (flag)
 {
-    <h1>This phone number is already Registered.</h1>
+        <h1>This phone number is already Registered <i class="bi bi-emoji-laughing"></i></h1>
     <p>You dont need to register yourself you can directly ask your question by clicking below link</p>
         <a class="btn btn-danger" href="@Url.Action("PhoneView", new { phoneNumber = phoneNumber })">View All Data</a>
 }
 else
 {
-    <h1>The phone number is not yet Register.</h1>
+        <h1>The phone number is not yet Register <i class="bi bi-emoji-frown"></i></h1>
     <p>Please Register yourself by clicking on the below button</p>
      <a class="btn btn-danger" href="@Url.Action("AddOrEdit")">Register New</a>
 }
